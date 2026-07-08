@@ -1,0 +1,272 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}ApexHire | Recruiter Dashboard{% endblock %}
+
+{% block content %}
+<!-- Dashboard Header -->
+<div class="row align-items-center mb-5">
+    <div class="col-md-7">
+        <h2 class="text-white mb-1">ATS Control Center</h2>
+        <p class="text-secondary mb-0">Recruiter Portal for <strong class="text-primary-gradient">{{ company.name }}</strong></p>
+    </div>
+    <div class="col-md-5 text-md-end mt-3 mt-md-0">
+        <a href="{% url 'post_job' %}" class="btn btn-primary rounded-pill px-4 btn-gradient me-2">
+            <i class="bi bi-plus-circle me-1"></i> Post New Job
+        </a>
+        <a href="{% url 'job_list' %}" class="btn btn-outline-light rounded-pill px-4 glass-btn">
+            <i class="bi bi-briefcase me-1"></i> View Openings
+        </a>
+    </div>
+</div>
+
+<!-- Metrics Cards Section -->
+<div class="row g-4 mb-5">
+    <div class="col-md-3 col-sm-6">
+        <div class="card glass-card metric-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="metric-label">Total Applications</span>
+                    <h3 class="metric-number text-white">{{ total_applications }}</h3>
+                </div>
+                <i class="bi bi-people-fill text-primary metric-icon"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="card glass-card metric-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="metric-label">Active Jobs</span>
+                    <h3 class="metric-number text-white">{{ active_jobs_count }}</h3>
+                </div>
+                <i class="bi bi-folder-check text-info metric-icon"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="card glass-card metric-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="metric-label">Shortlisted</span>
+                    <h3 class="metric-number text-success" id="metric-shortlisted-count">{{ shortlisted_count }}</h3>
+                </div>
+                <i class="bi bi-patch-check-fill text-success metric-icon"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="card glass-card metric-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="metric-label">Rejected</span>
+                    <h3 class="metric-number text-danger" id="metric-rejected-count">{{ rejected_count }}</h3>
+                </div>
+                <i class="bi bi-person-x-fill text-danger metric-icon"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Kanban Stage Board -->
+<div class="kanban-board">
+    <!-- Stage: Applied -->
+    <div class="kanban-col">
+        <div class="kanban-col-header">
+            <h5 class="kanban-col-title text-white">Applied</h5>
+            <span class="kanban-count" id="count-Applied">{{ applied_apps.count }}</span>
+        </div>
+        <div class="kanban-cards-list" id="list-Applied">
+            {% for app in applied_apps %}
+                {% include 'jobs/includes/kanban_card.html' with app=app %}
+            {% empty %}
+                <div class="text-center py-4 text-muted small kanban-empty-placeholder">Empty</div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Stage: Under Review -->
+    <div class="kanban-col">
+        <div class="kanban-col-header">
+            <h5 class="kanban-col-title text-white">Under Review</h5>
+            <span class="kanban-count" id="count-Review">{{ review_apps.count }}</span>
+        </div>
+        <div class="kanban-cards-list" id="list-Review">
+            {% for app in review_apps %}
+                {% include 'jobs/includes/kanban_card.html' with app=app %}
+            {% empty %}
+                <div class="text-center py-4 text-muted small kanban-empty-placeholder">Empty</div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Stage: Shortlisted -->
+    <div class="kanban-col">
+        <div class="kanban-col-header">
+            <h5 class="kanban-col-title text-white">Shortlisted</h5>
+            <span class="kanban-count" id="count-Shortlisted">{{ shortlisted_apps.count }}</span>
+        </div>
+        <div class="kanban-cards-list" id="list-Shortlisted">
+            {% for app in shortlisted_apps %}
+                {% include 'jobs/includes/kanban_card.html' with app=app %}
+            {% empty %}
+                <div class="text-center py-4 text-muted small kanban-empty-placeholder">Empty</div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Stage: Rejected -->
+    <div class="kanban-col">
+        <div class="kanban-col-header">
+            <h5 class="kanban-col-title text-white">Rejected</h5>
+            <span class="kanban-count" id="count-Rejected">{{ rejected_apps.count }}</span>
+        </div>
+        <div class="kanban-cards-list" id="list-Rejected">
+            {% for app in rejected_apps %}
+                {% include 'jobs/includes/kanban_card.html' with app=app %}
+            {% empty %}
+                <div class="text-center py-4 text-muted small kanban-empty-placeholder">Empty</div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Candidate Details Modal -->
+<div class="modal fade" id="candidateModal" tabindex="-1" aria-labelledby="candidateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content modal-glass-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="candidateModalLabel">
+                    Applicant Profile: <span class="text-gradient-primary modal-candidate-name">Full Name</span>
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="row g-4">
+                    <div class="col-md-7 border-end border-secondary-subtle">
+                        <h6 class="text-primary-gradient mb-2">Key Information</h6>
+                        
+                        <table class="table table-borderless text-secondary small align-middle mb-4">
+                            <tbody>
+                                <tr>
+                                    <td class="ps-0 py-1" style="width: 120px;"><i class="bi bi-envelope me-2 text-muted"></i> Email:</td>
+                                    <td class="py-1"><strong class="text-white modal-candidate-email">email@domain.com</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-0 py-1"><i class="bi bi-phone me-2 text-muted"></i> Phone:</td>
+                                    <td class="py-1"><strong class="text-white modal-candidate-phone">1234567</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-0 py-1"><i class="bi bi-calendar-check me-2 text-muted"></i> Applied:</td>
+                                    <td class="py-1"><strong class="text-white modal-candidate-applied">Jul 06, 2026</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-0 py-1"><i class="bi bi-briefcase me-2 text-muted"></i> Position:</td>
+                                    <td class="py-1"><strong class="text-primary modal-candidate-job">Job Title</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h6 class="text-primary-gradient mb-2">Skills & Expertise</h6>
+                        <div class="modal-candidate-skills-list d-flex flex-wrap gap-2 mb-4">
+                            <!-- Skill badges inserted here via JS -->
+                        </div>
+
+                        <h6 class="text-primary-gradient mb-2">Bio / Intro</h6>
+                        <p class="text-secondary small modal-candidate-bio" style="line-height: 1.5;">Candidate biography goes here...</p>
+                    </div>
+                    
+                    <div class="col-md-5">
+                        <h6 class="text-primary-gradient mb-2">Portfolio & Links</h6>
+                        <div class="d-flex flex-column gap-2 mb-4">
+                            <a href="#" target="_blank" class="btn btn-outline-light btn-sm rounded-pill text-start glass-btn modal-candidate-resume" id="modal-resume-btn">
+                                <i class="bi bi-file-earmark-pdf me-2 text-danger"></i> View Resume PDF
+                            </a>
+                            <a href="#" target="_blank" class="btn btn-outline-light btn-sm rounded-pill text-start glass-btn modal-candidate-portfolio" id="modal-portfolio-btn">
+                                <i class="bi bi-github me-2 text-white"></i> View Portfolio / Github
+                            </a>
+                        </div>
+
+                        <h6 class="text-primary-gradient mb-2">Cover Letter</h6>
+                        <div class="p-3 rounded bg-black bg-opacity-30 border border-secondary-subtle">
+                            <p class="text-secondary small mb-0 modal-candidate-cover" style="white-space: pre-line; line-height: 1.5; font-style: italic;">Cover letter text goes here...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-light rounded-pill px-4 glass-btn" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const candidateModal = document.getElementById('candidateModal');
+        
+        if (candidateModal) {
+            candidateModal.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget;
+                
+                // Extract data attributes
+                const name = button.getAttribute('data-name');
+                const email = button.getAttribute('data-email');
+                const phone = button.getAttribute('data-phone');
+                const skills = button.getAttribute('data-skills') || '';
+                const resume = button.getAttribute('data-resume');
+                const portfolio = button.getAttribute('data-portfolio');
+                const bio = button.getAttribute('data-bio');
+                const cover = button.getAttribute('data-cover');
+                const applied = button.getAttribute('data-applied');
+                const job = button.getAttribute('data-job');
+                
+                // Set text fields in modal
+                candidateModal.querySelector('.modal-candidate-name').textContent = name;
+                candidateModal.querySelector('.modal-candidate-email').textContent = email;
+                candidateModal.querySelector('.modal-candidate-phone').textContent = phone;
+                candidateModal.querySelector('.modal-candidate-applied').textContent = applied;
+                candidateModal.querySelector('.modal-candidate-job').textContent = job;
+                candidateModal.querySelector('.modal-candidate-bio').textContent = bio || 'No biography details provided by candidate.';
+                candidateModal.querySelector('.modal-candidate-cover').textContent = cover || 'No cover letter provided.';
+                
+                // Handle skills badges
+                const skillsContainer = candidateModal.querySelector('.modal-candidate-skills-list');
+                skillsContainer.innerHTML = '';
+                if (skills.trim()) {
+                    skills.split(',').forEach(skill => {
+                        const trimmed = skill.trim();
+                        if (trimmed) {
+                            const badge = document.createElement('span');
+                            badge.className = 'badge badge-glass-tag';
+                            badge.textContent = trimmed;
+                            skillsContainer.appendChild(badge);
+                        }
+                    });
+                } else {
+                    skillsContainer.innerHTML = '<span class="text-muted small">None specified</span>';
+                }
+                
+                // Handle Links visibility
+                const resumeBtn = document.getElementById('modal-resume-btn');
+                if (resume && resume !== 'None' && resume.trim() !== '') {
+                    resumeBtn.href = resume;
+                    resumeBtn.style.display = 'block';
+                } else {
+                    resumeBtn.style.display = 'none';
+                }
+
+                const portfolioBtn = document.getElementById('modal-portfolio-btn');
+                if (portfolio && portfolio !== 'None' && portfolio.trim() !== '') {
+                    portfolioBtn.href = portfolio;
+                    portfolioBtn.style.display = 'block';
+                } else {
+                    portfolioBtn.style.display = 'none';
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}ApexHire | Recruiter Sign Up{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center mb-5" style="min-height: 80vh;">
+    <div class="col-lg-8 col-md-10 col-sm-12">
+        <div class="card glass-card p-4 p-md-5 shadow-lg">
+            
+            <!-- Branding Header -->
+            <div class="text-center mb-4">
+                <i class="bi bi-person-workspace text-gradient-primary brand-logo-icon mb-2" style="font-size: 2.5rem;"></i>
+                <h3 class="text-white mb-1">Recruiter Registration</h3>
+                <p class="text-secondary small">Register your profile and connect with candidate pipelines</p>
+            </div>
+            
+            <!-- Signup Form -->
+            <form method="POST" action="{% url 'recruiter_signup' %}" id="recruiter-signup-form">
+                {% csrf_token %}
+                
+                <h5 class="text-primary-gradient mb-3 border-bottom border-secondary-subtle pb-2">User Information</h5>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label for="{{ form.username.id_for_label }}" class="form-label small text-secondary">Username</label>
+                        {{ form.username }}
+                        {% if form.username.errors %}
+                            <div class="text-danger small mt-1">{{ form.username.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="{{ form.email.id_for_label }}" class="form-label small text-secondary">Email Address</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="{{ form.password.id_for_label }}" class="form-label small text-secondary">Password</label>
+                        {{ form.password }}
+                        {% if form.password.errors %}
+                            <div class="text-danger small mt-1">{{ form.password.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="{{ form.password_confirm.id_for_label }}" class="form-label small text-secondary">Confirm Password</label>
+                        {{ form.password_confirm }}
+                        {% if form.password_confirm.errors %}
+                            <div class="text-danger small mt-1">{{ form.password_confirm.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <h5 class="text-primary-gradient mb-3 border-bottom border-secondary-subtle pb-2">Company Affiliation</h5>
+                <div class="mb-4">
+                    <label for="id_company_choice" class="form-label small text-secondary">Choose Company</label>
+                    {{ form.company_choice }}
+                    {% if form.company_choice.errors %}
+                        <div class="text-danger small mt-1">{{ form.company_choice.errors.0 }}</div>
+                    {% endif %}
+                    <div class="form-text text-muted small mt-1">Select your company from the list, or register a new one.</div>
+                </div>
+
+                <!-- Hidden/Conditional Fields for registering a brand new company -->
+                <div id="new-company-fields" class="card bg-black bg-opacity-25 border border-secondary-subtle p-4 rounded-3 mb-4" style="display: none;">
+                    <h6 class="text-light mb-3"><i class="bi bi-building-add me-2 text-primary"></i>Register a New Company</h6>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="id_new_company_name" class="form-label small text-secondary">Company Name</label>
+                            <input type="text" name="new_company_name" id="id_new_company_name" class="form-control" placeholder="e.g. Stripe" value="{{ form.new_company_name.value|default:'' }}">
+                            {% if form.new_company_name.errors %}
+                                <div class="text-danger small mt-1">{{ form.new_company_name.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="id_new_company_location" class="form-label small text-secondary">Location</label>
+                            <input type="text" name="new_company_location" id="id_new_company_location" class="form-control" placeholder="e.g. San Francisco, CA" value="{{ form.new_company_location.value|default:'' }}">
+                            {% if form.new_company_location.errors %}
+                                <div class="text-danger small mt-1">{{ form.new_company_location.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="id_new_company_website" class="form-label small text-secondary">Website URL</label>
+                            <input type="url" name="new_company_website" id="id_new_company_website" class="form-control" placeholder="https://example.com" value="{{ form.new_company_website.value|default:'' }}">
+                            {% if form.new_company_website.errors %}
+                                <div class="text-danger small mt-1">{{ form.new_company_website.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="id_new_company_logo_url" class="form-label small text-secondary">Logo Image URL</label>
+                            <input type="url" name="new_company_logo_url" id="id_new_company_logo_url" class="form-control" placeholder="https://example.com/logo.png" value="{{ form.new_company_logo_url.value|default:'' }}">
+                            {% if form.new_company_logo_url.errors %}
+                                <div class="text-danger small mt-1">{{ form.new_company_logo_url.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-12">
+                            <label for="id_new_company_description" class="form-label small text-secondary">Company Description</label>
+                            <textarea name="new_company_description" id="id_new_company_description" class="form-control" rows="3" placeholder="Describe the company's industry, size, and mission...">{{ form.new_company_description.value|default:'' }}</textarea>
+                            {% if form.new_company_description.errors %}
+                                <div class="text-danger small mt-1">{{ form.new_company_description.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 btn-gradient mb-3">
+                    Register Recruiter Account
+                </button>
+                
+                <div class="text-center border-top border-secondary-subtle pt-3">
+                    <span class="text-muted small">Already registered?</span>
+                    <a href="{% url 'recruiter_login' %}" class="text-decoration-none text-primary small ms-1 hover-white">Sign In as Recruiter</a>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const companyChoice = document.getElementById('id_company_choice');
+        const newCompanyFields = document.getElementById('new-company-fields');
+        
+        function toggleNewCompanyFields() {
+            if (companyChoice && companyChoice.value === 'new') {
+                newCompanyFields.style.display = 'block';
+                document.getElementById('id_new_company_name').required = true;
+                document.getElementById('id_new_company_location').required = true;
+            } else {
+                newCompanyFields.style.display = 'none';
+                document.getElementById('id_new_company_name').required = false;
+                document.getElementById('id_new_company_location').required = false;
+            }
+        }
+        
+        if (companyChoice && newCompanyFields) {
+            companyChoice.addEventListener('change', toggleNewCompanyFields);
+            // Run on load in case of post-back with errors
+            toggleNewCompanyFields();
+        }
+    });
+</script>
+{% endblock %}

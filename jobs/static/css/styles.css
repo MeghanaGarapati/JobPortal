@@ -1,0 +1,747 @@
+/* Custom Glassmorphism Dark Theme Variables */
+:root {
+    --bg-dark: #090d16;
+    --bg-card: rgba(17, 24, 39, 0.6);
+    --border-color: rgba(255, 255, 255, 0.06);
+    --border-hover: rgba(139, 92, 246, 0.25);
+    --text-primary: #f3f4f6;
+    --text-secondary: #9ca3af;
+    --text-muted: #6b7280;
+    
+    /* Elegant tailwind-like statuses */
+    --status-applied: #3b82f6;       /* Radiant Blue */
+    --status-applied-bg: rgba(59, 130, 246, 0.15);
+    --status-review: #f59e0b;        /* Vibrant Orange */
+    --status-review-bg: rgba(245, 158, 11, 0.15);
+    --status-shortlist: #10b981;     /* Emerald Green */
+    --status-shortlist-bg: rgba(16, 185, 129, 0.15);
+    --status-rejected: #ef4444;      /* Crimson Red */
+    --status-rejected-bg: rgba(239, 68, 68, 0.15);
+    
+    /* Accents */
+    --accent-purple: #8b5cf6;
+    --accent-blue: #3b82f6;
+    --accent-indigo: #6366f1;
+    
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Global resets & Typography */
+body.dark-theme {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    position: relative;
+}
+
+h1, h2, h3, h4, h5, h6, .brand-text {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+}
+
+/* Background Glowing Orbs */
+.glow-bg-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.glow-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.12;
+    animation: float 20s infinite alternate;
+}
+
+.orb-1 {
+    background: var(--accent-purple);
+    width: 500px;
+    height: 500px;
+    top: -100px;
+    right: -50px;
+}
+
+.orb-2 {
+    background: var(--accent-blue);
+    width: 600px;
+    height: 600px;
+    bottom: -150px;
+    left: -100px;
+    animation-delay: -5s;
+}
+
+.orb-3 {
+    background: var(--accent-indigo);
+    width: 400px;
+    height: 400px;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation-delay: -10s;
+}
+
+@keyframes float {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(40px, 40px) scale(1.1); }
+}
+
+/* Glassmorphism Styles */
+.glass-nav {
+    background: rgba(10, 10, 20, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.glass-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    transition: var(--transition-smooth);
+}
+
+.glass-card:hover {
+    border-color: var(--border-hover);
+    box-shadow: 0 10px 30px rgba(147, 51, 234, 0.1);
+    transform: translateY(-5px);
+}
+
+.glass-alert {
+    background: rgba(22, 22, 38, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: var(--text-primary);
+}
+
+.glass-footer {
+    background: rgba(10, 10, 20, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid var(--border-color);
+}
+
+/* Gradients */
+.text-gradient-primary {
+    background: linear-gradient(135deg, #a855f7 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.text-primary-gradient {
+    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.btn-gradient {
+    background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%);
+    border: none;
+    color: white;
+    font-weight: 500;
+    transition: var(--transition-smooth);
+}
+
+.btn-gradient:hover {
+    opacity: 0.9;
+    transform: scale(1.03);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+    color: white;
+}
+
+.glass-btn {
+    border: 1px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.05);
+    transition: var(--transition-smooth);
+}
+
+.glass-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Form Styles */
+.form-control, .form-select {
+    background-color: rgba(10, 10, 18, 0.6) !important;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary) !important;
+    border-radius: 10px;
+    padding: 10px 14px;
+    transition: var(--transition-smooth);
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: rgba(10, 10, 18, 0.8) !important;
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.2);
+}
+
+.form-control::placeholder {
+    color: var(--text-muted);
+}
+
+/* Badges */
+.badge-glass-tag {
+    background: rgba(139, 92, 246, 0.12);
+    color: #c084fc;
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.badge-glass-info {
+    background: rgba(59, 130, 246, 0.1);
+    color: #60a5fa;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+/* Status Badges */
+.badge-status {
+    border-radius: 12px;
+    padding: 4px 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.status-applied {
+    background-color: var(--status-applied-bg);
+    color: var(--status-applied);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.status-review {
+    background-color: var(--status-review-bg);
+    color: var(--status-review);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.status-shortlisted {
+    background-color: var(--status-shortlist-bg);
+    color: var(--status-shortlist);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.status-rejected {
+    background-color: var(--status-rejected-bg);
+    color: var(--status-rejected);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Job Portal Specific Styles */
+.job-search-hero {
+    background: linear-gradient(135deg, rgba(22, 22, 38, 0.8) 0%, rgba(10, 10, 18, 0.8) 100%);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 40px;
+    margin-bottom: 40px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.brand-logo-icon {
+    font-size: 1.5rem;
+}
+
+.company-logo-placeholder {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: white;
+    font-size: 1.3rem;
+}
+
+.company-logo-img {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+/* Detailed Page Styles */
+.job-detail-header {
+    background: linear-gradient(135deg, rgba(22, 22, 38, 0.8) 0%, rgba(10, 10, 18, 0.8) 100%);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+/* Kanban / Board ATS Dashboard Styles */
+.kanban-board {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 20px;
+    min-height: 600px;
+}
+
+.kanban-col {
+    flex: 1;
+    min-width: 280px;
+    background: rgba(13, 13, 23, 0.6);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.kanban-col-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.kanban-col-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0;
+}
+
+.kanban-count {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-secondary);
+    border-radius: 10px;
+    padding: 2px 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.kanban-cards-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 500px; /* helpful for drop area targeting */
+}
+
+/* Kanban Cards styling */
+.kanban-card {
+    background: rgba(22, 22, 38, 0.9);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 14px;
+    cursor: grab;
+    transition: var(--transition-smooth);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.kanban-card:active {
+    cursor: grabbing;
+}
+
+.kanban-card:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+}
+
+/* Modal Custom Glassmorphism */
+.modal-glass-content {
+    background: rgba(18, 18, 30, 0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    color: var(--text-primary);
+}
+
+.modal-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.modal-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Hover effects */
+.hover-white:hover {
+    color: #ffffff !important;
+}
+
+/* Scrollbar customization */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(139, 92, 246, 0.4);
+}
+
+/* User profile tag */
+.user-profile-badge {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    padding: 6px 14px;
+    border-radius: 20px;
+}
+
+/* Metrics Dashboard Cards */
+.metric-card {
+    padding: 20px;
+}
+
+.metric-number {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 4px 0 0 0;
+}
+
+.metric-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.metric-icon {
+    font-size: 2rem;
+    opacity: 0.8;
+}
+
+/* Dropdown pipeline status modification */
+.dropdown-status-btn {
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.03);
+    color: var(--text-secondary);
+    transition: var(--transition-smooth);
+}
+.dropdown-status-btn:hover {
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+}
+.dropdown-menu-glass {
+    background: rgba(18, 18, 30, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+}
+.dropdown-item-glass {
+    color: var(--text-secondary) !important;
+    transition: var(--transition-smooth);
+}
+.dropdown-item-glass:hover {
+    background: rgba(255,255,255,0.05) !important;
+    color: #fff !important;
+}
+
+/* /* ==========================================================================
+   Light Mode Theme Styles & Variables (Cream, Orange, and Dark Purple)
+   ========================================================================== */
+body.light-theme {
+    --bg-dark: #faf6ed;          /* Warm Cream Background */
+    --bg-card: #fffdfa;          /* Cream-tinted White for Cards */
+    --border-color: rgba(88, 28, 135, 0.08); /* Soft Purple Border */
+    --border-hover: rgba(88, 28, 135, 0.3);  /* Vivid Purple Hover Border */
+    --text-primary: #1c1917;      /* stone-900 (very dark gray) for body text */
+    --text-secondary: #44403c;    /* stone-700 for subtext */
+    --text-muted: #78716c;        /* stone-500 */
+    
+    background-color: var(--bg-dark) !important;
+    color: var(--text-primary) !important;
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    position: relative;
+}
+
+body.light-theme .glow-orb {
+    background: #581c87 !important; /* Dark Purple Glow */
+    opacity: 0.02 !important;
+    filter: blur(160px) !important;
+}
+
+/* Navbar light theme styling overrides */
+body.light-theme .glass-nav {
+    background: rgba(255, 255, 255, 0.85) !important;
+    border-bottom: 1px solid rgba(88, 28, 135, 0.08) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+body.light-theme .glass-nav .nav-link {
+    color: #57534e !important; /* stone-600 */
+}
+
+body.light-theme .glass-nav .nav-link:hover,
+body.light-theme .glass-nav .nav-link.active {
+    color: #581c87 !important; /* Dark Purple */
+}
+
+body.light-theme .glass-nav .navbar-brand,
+body.light-theme .glass-nav .brand-text {
+    color: #581c87 !important; /* Dark Purple logo text */
+}
+
+body.light-theme .glass-nav .brand-logo-icon {
+    color: #581c87 !important;
+}
+
+body.light-theme .glass-nav .navbar-toggler-icon {
+    filter: invert(1) sepia(1) saturate(5) hue-rotate(250deg); /* Purple tint toggler */
+}
+
+/* Footer light theme styling overrides */
+body.light-theme .glass-footer {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border-top: 1px solid rgba(88, 28, 135, 0.08) !important;
+}
+
+/* Cards light theme overrides */
+body.light-theme .glass-card {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 4px 20px rgba(88, 28, 135, 0.02), 0 10px 30px rgba(88, 28, 135, 0.01) !important;
+}
+
+body.light-theme .glass-card:hover {
+    border-color: var(--border-hover) !important;
+    box-shadow: 0 10px 30px rgba(88, 28, 135, 0.06) !important;
+}
+
+/* Kanban column and cards overrides */
+body.light-theme .kanban-col {
+    background: rgba(245, 240, 230, 0.75) !important; /* Creamy board background */
+    border: 1px solid rgba(88, 28, 135, 0.06) !important;
+}
+
+body.light-theme .kanban-card {
+    background: #ffffff !important;
+    border: 1px solid rgba(88, 28, 135, 0.06) !important;
+    box-shadow: 0 4px 10px rgba(88, 28, 135, 0.02) !important;
+}
+
+body.light-theme .kanban-card:hover {
+    border-color: #581c87 !important;
+    box-shadow: 0 8px 16px rgba(88, 28, 135, 0.06) !important;
+}
+
+/* Modal light theme overrides */
+body.light-theme .modal-glass-content {
+    background: #fffdfa !important;
+    border: 1px solid rgba(88, 28, 135, 0.1) !important;
+    color: var(--text-primary) !important;
+    box-shadow: 0 20px 50px rgba(88, 28, 135, 0.08) !important;
+}
+
+/* Form Controls & Pre-pends overrides */
+body.light-theme .form-control,
+body.light-theme .form-select {
+    background-color: #ffffff !important;
+    border: 1px solid rgba(88, 28, 135, 0.15) !important;
+    color: var(--text-primary) !important;
+}
+
+body.light-theme .form-control:focus,
+body.light-theme .form-select:focus {
+    background-color: #ffffff !important;
+    border-color: #581c87 !important;
+    box-shadow: 0 0 0 3px rgba(88, 28, 135, 0.15) !important;
+}
+
+body.light-theme .form-control::placeholder {
+    color: #a8a29e !important; /* stone-400 */
+}
+
+body.light-theme .input-group-text {
+    background-color: #fffdfa !important;
+    border-color: rgba(88, 28, 135, 0.15) !important;
+    color: var(--text-muted) !important;
+}
+
+/* Dropdown Menu overrides */
+body.light-theme .dropdown-menu-glass {
+    background: #ffffff !important;
+    border: 1px solid rgba(88, 28, 135, 0.1) !important;
+    box-shadow: 0 10px 25px rgba(88, 28, 135, 0.04) !important;
+}
+
+body.light-theme .dropdown-item-glass {
+    color: var(--text-secondary) !important;
+}
+
+body.light-theme .dropdown-item-glass:hover {
+    background: #faf6ed !important;
+    color: var(--text-primary) !important;
+}
+
+/* Status Badges */
+body.light-theme .glass-alert {
+    background: #ffffff !important;
+    border: 1px solid rgba(88, 28, 135, 0.08) !important;
+    color: var(--text-primary) !important;
+    box-shadow: 0 10px 25px rgba(88, 28, 135, 0.04) !important;
+}
+
+body.light-theme .badge-glass-tag {
+    background: rgba(88, 28, 135, 0.06) !important;
+    color: #581c87 !important; /* Dark Purple */
+    border: 1px solid rgba(88, 28, 135, 0.12) !important;
+}
+
+body.light-theme .badge-glass-info {
+    background: rgba(194, 65, 12, 0.06) !important;
+    color: #c2410c !important; /* Orange */
+    border: 1px solid rgba(194, 65, 12, 0.12) !important;
+}
+
+/* Title texts to Orange */
+body.light-theme h1,
+body.light-theme h2,
+body.light-theme h3,
+body.light-theme h4,
+body.light-theme h5,
+body.light-theme h6,
+body.light-theme .card-title,
+body.light-theme .modal-title,
+body.light-theme .text-gradient-primary,
+body.light-theme .text-primary-gradient {
+    color: #c2410c !important; /* Burnt Orange */
+    background: none !important;
+    -webkit-background-clip: initial !important;
+    -webkit-text-fill-color: initial !important;
+}
+
+/* Link and active states to Dark Purple */
+body.light-theme .text-primary {
+    color: #581c87 !important; /* Dark Purple */
+}
+
+body.light-theme .text-success {
+    color: #16a34a !important;
+}
+
+body.light-theme .text-white {
+    color: var(--text-primary) !important;
+}
+
+body.light-theme .text-secondary {
+    color: var(--text-secondary) !important;
+}
+
+body.light-theme .text-muted {
+    color: var(--text-muted) !important;
+}
+
+/* Button overrides */
+body.light-theme .btn-primary.btn-gradient {
+    background: linear-gradient(135deg, #7c3aed 0%, #c2410c 100%) !important; /* Purple to Orange */
+    border: none !important;
+    color: #ffffff !important;
+}
+
+body.light-theme .btn-primary.btn-gradient:hover {
+    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3) !important;
+}
+
+body.light-theme .btn-outline-light {
+    border-color: rgba(88, 28, 135, 0.2) !important;
+    color: #581c87 !important;
+    background: rgba(88, 28, 135, 0.02) !important;
+}
+
+body.light-theme .btn-outline-light:hover {
+    background-color: rgba(88, 28, 135, 0.06) !important;
+    color: #581c87 !important;
+    border-color: rgba(88, 28, 135, 0.35) !important;
+}
+
+body.light-theme .modal-header .btn-close,
+body.light-theme .alert-dismissible .btn-close {
+    filter: invert(1) grayscale(1) brightness(0) !important;
+}
+
+body.light-theme .dropdown-status-btn {
+    border: 1px solid rgba(88, 28, 135, 0.15) !important;
+    background: #fffdfa !important;
+    color: var(--text-secondary) !important;
+}
+
+body.light-theme .dropdown-status-btn:hover {
+    background: #faf6ed !important;
+    color: var(--text-primary) !important;
+}
+
+body.light-theme .user-profile-badge {
+    background: rgba(88, 28, 135, 0.04) !important;
+    border: 1px solid rgba(88, 28, 135, 0.08) !important;
+    color: var(--text-primary) !important;
+}
+
+body.light-theme .user-profile-badge span,
+body.light-theme .user-profile-badge strong {
+    color: var(--text-primary) !important;
+}
+
+body.light-theme ::-webkit-scrollbar-thumb {
+    background: rgba(88, 28, 135, 0.15) !important;
+}
+
+body.light-theme ::-webkit-scrollbar-thumb:hover {
+    background: rgba(124, 58, 237, 0.5) !important;
+}
+
+/* Hero and header light theme overrides */
+body.light-theme .job-search-hero,
+body.light-theme .job-detail-header {
+    background: linear-gradient(135deg, #fffbf5 0%, #f7f3e9 100%) !important; /* Soft Cream Gradient */
+    border: 1px solid rgba(88, 28, 135, 0.1) !important;
+    box-shadow: 0 10px 40px rgba(88, 28, 135, 0.02) !important;
+}
+
+body.light-theme .job-search-hero h1,
+body.light-theme .job-search-hero p,
+body.light-theme .job-search-hero span,
+body.light-theme .job-detail-header h2,
+body.light-theme .job-detail-header p,
+body.light-theme .job-detail-header span {
+    color: #c2410c !important; /* Orange Title text inside heroes */
+}
+
+body.light-theme .job-search-hero p,
+body.light-theme .job-detail-header p {
+    color: #44403c !important; /* stone-700 for descriptions */
+}
+
+

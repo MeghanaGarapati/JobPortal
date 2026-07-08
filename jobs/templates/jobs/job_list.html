@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}ApexHire | Modern Job Portal{% endblock %}
+
+{% block content %}
+<!-- Search and Filter Hero Section -->
+<div class="row justify-content-center">
+    <div class="col-lg-11">
+        <div class="job-search-hero">
+            <h1 class="text-center mb-2 text-white">Find Your Next <span class="text-gradient-primary">Dream Career</span></h1>
+            <p class="text-center text-secondary mb-4">Discover curated opportunities in engineering, design, product, and tech.</p>
+            
+            <!-- Filter controls form -->
+            <div class="row g-3">
+                <div class="col-md-5">
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-secondary-subtle text-muted">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input type="text" id="job-search" class="form-control" placeholder="Search by job title, company, skills, or location...">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <select id="filter-type" class="form-select border-secondary-subtle">
+                        <option value="">All Job Types</option>
+                        <option value="Full-time">Full-time</option>
+                        <option value="Part-time">Part-time</option>
+                        <option value="Contract">Contract</option>
+                        <option value="Remote">Remote</option>
+                        <option value="Internship">Internship</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <select id="filter-level" class="form-select border-secondary-subtle">
+                        <option value="">All Experience Levels</option>
+                        <option value="Entry Level">Entry Level</option>
+                        <option value="Mid Level">Mid Level</option>
+                        <option value="Senior Level">Senior Level</option>
+                        <option value="Lead / Exec">Lead / Exec</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Quick Skill Filters -->
+            {% if all_tags %}
+            <div class="mt-4 d-flex flex-wrap gap-2 align-items-center justify-content-center">
+                <span class="small text-muted me-2">Popular Skills:</span>
+                {% for tag in all_tags %}
+                <button type="button" class="btn btn-sm badge-glass-tag skill-filter-tag" data-skill="{{ tag }}">{{ tag }}</button>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Job Postings List Grid -->
+<div class="row justify-content-center">
+    <div class="col-lg-11">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="mb-0 text-white font-weight-bold">Latest Openings</h4>
+            <div class="text-muted small">Showing {{ jobs.count }} active positions</div>
+        </div>
+        
+        <div class="row g-4" id="job-postings-container">
+            {% for job in jobs %}
+            <div class="col-md-6 job-card-wrapper" 
+                 data-title="{{ job.title }}" 
+                 data-company="{{ job.company.name }}" 
+                 data-tags="{{ job.tags }}"
+                 data-type="{{ job.job_type }}"
+                 data-level="{{ job.experience_level }}">
+                
+                <div class="card h-100 glass-card">
+                    <div class="card-body p-4 d-flex flex-column">
+                        <div class="d-flex align-items-start justify-content-between mb-3">
+                            <div class="d-flex align-items-center gap-3">
+                                {% if job.company.logo_url %}
+                                    <img src="{{ job.company.logo_url }}" alt="{{ job.company.name }} logo" class="company-logo-img">
+                                {% else %}
+                                    <div class="company-logo-placeholder">
+                                        {{ job.company.name|slice:":1" }}
+                                    </div>
+                                {% endif %}
+                                <div>
+                                    <h5 class="card-title mb-0 text-white">{{ job.title }}</h5>
+                                    <span class="text-primary small font-weight-bold">{{ job.company.name }}</span>
+                                </div>
+                            </div>
+                            <span class="badge badge-glass-info">{{ job.job_type }}</span>
+                        </div>
+                        
+                        <p class="card-text text-secondary text-truncate-2 flex-grow-1 small mb-3">
+                            {{ job.description|truncatewords:25 }}
+                        </p>
+                        
+                        <div class="d-flex flex-wrap gap-1 mb-3">
+                            {% for tag in job.get_tags_list %}
+                                <span class="badge badge-glass-tag">{{ tag }}</span>
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="row g-2 border-top border-secondary-subtle pt-3 mt-auto align-items-center">
+                            <div class="col-7">
+                                <div class="d-flex flex-column gap-1">
+                                    <span class="text-muted small"><i class="bi bi-geo-alt me-1"></i> {{ job.location }}</span>
+                                    {% if job.salary_range %}
+                                    <span class="text-success small"><i class="bi bi-wallet2 me-1"></i> {{ job.salary_range }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-5 text-end">
+                                <span class="text-muted text-micro">{{ job.created_at|timesince }} ago</span>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex gap-2 mt-3">
+                            <a href="{% url 'job_detail' job.pk %}" class="btn btn-outline-light btn-sm flex-grow-1 rounded-pill glass-btn">
+                                <i class="bi bi-eye me-1"></i> Details
+                            </a>
+                            <button type="button" class="btn btn-primary btn-sm flex-grow-1 btn-gradient rounded-pill" 
+                                    data-bs-toggle="modal" data-bs-target="#applyModal" 
+                                    data-job-id="{{ job.pk }}" data-job-title="{{ job.title }}">
+                                <i class="bi bi-send me-1"></i> Apply
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <i class="bi bi-slash-circle text-muted fs-1 mb-3"></i>
+                <h5 class="text-white">No active job opportunities found.</h5>
+                <p class="text-secondary small">Check back later or register as a recruiter to seed jobs.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Jobs Application Modal -->
+<div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content modal-glass-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="applyModalLabel">
+                    Apply for <span class="text-gradient-primary modal-title-job-name">Position</span>
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="apply-job-form" method="POST" action="">
+                {% csrf_token %}
+                <div class="modal-body p-4">
+                    {% if user.is_authenticated %}
+                        {% if user.is_staff or user.is_superuser %}
+                            <div class="text-center py-4">
+                                <i class="bi bi-person-x-fill text-danger fs-1 mb-3"></i>
+                                <h5 class="text-white">Recruiter Account</h5>
+                                <p class="text-secondary small">You are logged in as a recruiter. Recruiters cannot submit job applications.</p>
+                                <a href="{% url 'recruiter_dashboard' %}" class="btn btn-outline-light rounded-pill px-4 btn-sm glass-btn mt-2">
+                                    Go to ATS Dashboard
+                                </a>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-info glass-alert mb-4">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-person-check-fill me-3 fs-4 text-primary"></i>
+                                        <div>
+                                            <div class="text-muted text-micro">Applying as</div>
+                                            <strong class="text-white">{{ user.candidate_profile.full_name }}</strong>
+                                            <span class="text-secondary small">| {{ user.email }}</span>
+                                        </div>
+                                    </div>
+                                    <a href="{% url 'candidate_dashboard' %}" class="btn btn-sm btn-outline-light rounded-pill px-3 glass-btn small">
+                                        Edit Profile
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <h6 class="border-bottom border-secondary-subtle pb-2 mb-3 text-primary-gradient">Application Cover Letter</h6>
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="form-label small text-secondary">Cover Letter <span class="text-danger">*</span></label>
+                                    {{ application_form.cover_letter }}
+                                    <div class="form-text text-muted text-micro">Write a brief statement of at least 20 characters explaining your fit.</div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="bi bi-lock-fill text-warning fs-1 mb-3"></i>
+                            <h5 class="text-white">Candidate Account Required</h5>
+                            <p class="text-secondary small">Please sign in as a candidate or register a new candidate account to apply for positions.</p>
+                            <div class="d-flex justify-content-center gap-3 mt-4">
+                                <a href="{% url 'candidate_login' %}" class="btn btn-outline-light rounded-pill px-4 glass-btn">
+                                    <i class="bi bi-box-arrow-in-right me-1"></i> Sign In
+                                </a>
+                                <a href="{% url 'candidate_signup' %}" class="btn btn-primary rounded-pill px-4 btn-gradient">
+                                    <i class="bi bi-person-plus me-1"></i> Register
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-light rounded-pill px-4 glass-btn" data-bs-dismiss="modal">Cancel</button>
+                    {% if user.is_authenticated and not user.is_staff and not user.is_superuser %}
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 btn-gradient">Submit Application</button>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: job-board-ats
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn myproject.wsgi:application --workers 2 --threads 2 --timeout 120"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.5
+      - key: DJANGO_SETTINGS_MODULE
+        value: myproject.settings
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: ".onrender.com"
+      - key: SUPERUSER_USERNAME
+        value: "admin"
+      - key: SUPERUSER_PASSWORD
+        value: "admin123"
+      - key: SUPERUSER_EMAIL
+        value: "admin@example.com"

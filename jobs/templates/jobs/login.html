@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}ApexHire | Recruiter Sign In{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: 70vh;">
+    <div class="col-md-5 col-sm-8">
+        <div class="card glass-card p-4 p-md-5 shadow-lg">
+            
+            <!-- Branding Header -->
+            <div class="text-center mb-4">
+                <i class="bi bi-hexagon-fill text-gradient-primary brand-logo-icon mb-2" style="font-size: 2.5rem;"></i>
+                <h3 class="text-white mb-1">Recruiter Sign In</h3>
+                <p class="text-secondary small">Access applicant tracking & pipeline dashboard</p>
+            </div>
+            
+            <!-- Login Form -->
+            <form method="POST" action="{% url 'recruiter_login' %}">
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    <label for="id_username" class="form-label small text-secondary">Username</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-secondary-subtle text-muted">
+                            <i class="bi bi-person"></i>
+                        </span>
+                        <input type="text" name="username" autofocus maxlength="150" class="form-control" required id="id_username" placeholder="Enter recruiter username">
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="id_password" class="form-label small text-secondary">Password</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-secondary-subtle text-muted">
+                            <i class="bi bi-lock"></i>
+                        </span>
+                        <input type="password" name="password" class="form-control" required id="id_password" placeholder="Enter password">
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 btn-gradient mb-3">
+                    Sign In
+                </button>
+                
+                <div class="text-center mb-3">
+                    <span class="text-muted small">New recruiter?</span>
+                    <a href="{% url 'recruiter_signup' %}" class="text-decoration-none text-primary small ms-1 hover-white">Register your company</a>
+                </div>
+                
+                <div class="text-center">
+                    <a href="{% url 'job_list' %}" class="text-decoration-none text-muted small hover-white">
+                        <i class="bi bi-arrow-left me-1"></i> Back to Job Portal
+                    </a>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+</div>
+{% endblock %}

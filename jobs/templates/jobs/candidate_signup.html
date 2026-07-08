@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}ApexHire | Candidate Registration{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+        <div class="card glass-card p-4 p-md-5 shadow-lg">
+            
+            <!-- Branding Header -->
+            <div class="text-center mb-4">
+                <i class="bi bi-hexagon-fill text-gradient-primary brand-logo-icon mb-2" style="font-size: 2.5rem;"></i>
+                <h3 class="text-white mb-1">Create Candidate Account</h3>
+                <p class="text-secondary small">Set up your credentials and career profile to begin applying</p>
+            </div>
+            
+            <form method="POST" action="{% url 'candidate_signup' %}" class="needs-validation">
+                {% csrf_token %}
+                
+                {% if form.non_field_errors %}
+                <div class="alert alert-danger glass-alert mb-4">
+                    {% for error in form.non_field_errors %}
+                        <div><i class="bi bi-exclamation-triangle-fill me-2 text-danger"></i>{{ error }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+                <!-- Account Credentials Section -->
+                <h6 class="border-bottom border-secondary-subtle pb-2 mb-3 text-primary-gradient">
+                    <i class="bi bi-shield-lock me-2"></i>Account Credentials
+                </h6>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label for="id_username" class="form-label small text-secondary">Username <span class="text-danger">*</span></label>
+                        {{ form.username }}
+                        {% if form.username.errors %}
+                        <div class="text-danger text-micro mt-1">{{ form.username.errors.as_text }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="id_email" class="form-label small text-secondary">Email Address <span class="text-danger">*</span></label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                        <div class="text-danger text-micro mt-1">{{ form.email.errors.as_text }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="id_password" class="form-label small text-secondary">Password <span class="text-danger">*</span></label>
+                        {{ form.password }}
+                        {% if form.password.errors %}
+                        <div class="text-danger text-micro mt-1">{{ form.password.errors.as_text }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="id_password_confirm" class="form-label small text-secondary">Confirm Password <span class="text-danger">*</span></label>
+                        {{ form.password_confirm }}
+                        {% if form.password_confirm.errors %}
+                        <div class="text-danger text-micro mt-1">{{ form.password_confirm.errors.as_text }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Candidate Profile Section -->
+                <h6 class="border-bottom border-secondary-subtle pb-2 mb-3 text-primary-gradient">
+                    <i class="bi bi-person-badge me-2"></i>Professional Profile
+                </h6>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label for="id_full_name" class="form-label small text-secondary">Full Name <span class="text-danger">*</span></label>
+                        {{ form.full_name }}
+                        {% if form.full_name.errors %}
+                        <div class="text-danger text-micro mt-1">{{ form.full_name.errors.as_text }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="id_phone" class="form-label small text-secondary">Phone Number <span class="text-danger">*</span></label>
+                        {{ form.phone }}
+                        {% if form.phone.errors %}
+                        <div class="text-danger text-micro mt-1">{{ form.phone.errors.as_text }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-12">
+                        <label for="id_skills" class="form-label small text-secondary">Skills <span class="text-danger">*</span> (Comma-separated, e.g. Python, Django, React)</label>
+                        {{ form.skills }}
+                        <div class="form-text text-muted text-micro">Enter key skills separated by commas to match with job requirements.</div>
+                        {% if form.skills.errors %}
+                        <div class="text-danger text-micro mt-1">{{ form.skills.errors.as_text }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="id_resume_url" class="form-label small text-secondary">Resume Link</label>
+                        {{ form.resume_url }}
+                        <div class="form-text text-muted text-micro">Google Drive, Dropbox, or public document link.</div>
+                        {% if form.resume_url.errors %}
+                        <div class="text-danger text-micro mt-1">{{ form.resume_url.errors.as_text }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="id_portfolio_url" class="form-label small text-secondary">Portfolio or Github URL</label>
+                        {{ form.portfolio_url }}
+                        <div class="form-text text-muted text-micro">Link to showcase your projects.</div>
+                        {% if form.portfolio_url.errors %}
+                        <div class="text-danger text-micro mt-1">{{ form.portfolio_url.errors.as_text }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-12">
+                        <label for="id_bio" class="form-label small text-secondary">Professional Summary / Bio</label>
+                        {{ form.bio }}
+                        {% if form.bio.errors %}
+                        <div class="text-danger text-micro mt-1">{{ form.bio.errors.as_text }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 btn-gradient mb-3">
+                    Register and Login
+                </button>
+                
+                <div class="text-center border-top border-secondary-subtle pt-3">
+                    <span class="text-muted small">Already have an account?</span>
+                    <a href="{% url 'candidate_login' %}" class="text-decoration-none text-primary small ms-1 hover-white">Sign In here</a>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+</div>
+{% endblock %}
